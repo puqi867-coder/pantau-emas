@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="id" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pantau Emas — Harga Emas, Kalkulator & Portofolio</title>
+  <meta name="description" content="Web app Pantau Emas: pantau harga emas Antam, UBS, Galeri 24, Pegadaian & Spot Dunia secara real-time, kalkulator laba/rugi, zakat emas, dan portofolio." />
+  <link rel="icon" type="image/jpeg" href="assets/icon.jpg" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigasi Utama">
+      <div class="brand-header">
+        <img src="assets/icon.jpg" alt="Logo Pantau Emas" class="brand-logo" />
+        <div class="brand-meta">
+          <span class="brand-title">Pantau Emas</span>
+          <span class="brand-sub">Web View Edition</span>
+        </div>
+      </div>
+
+      <nav class="nav-list" role="tablist">
+        <button class="nav-item active" data-screen="prices" role="tab" aria-selected="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+          <span>Harga Emas</span>
+        </button>
+        <button class="nav-item" data-screen="chart" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+          <span>Grafik Tren</span>
+        </button>
+        <button class="nav-item" data-screen="calculator" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M14 10h2M8 14h2M14 14h2M8 18h2M14 18h2"/></svg>
+          <span>Kalkulator</span>
+        </button>
+        <button class="nav-item" data-screen="portfolio" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+          <span>Portofolio</span>
+        </button>
+        <button class="nav-item" data-screen="tips" role="tab" aria-selected="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"/></svg>
+          <span>Tips & Edukasi</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-footer">
+        <a href="https://github.com/puqi867-coder/pantau-emas" target="_blank" rel="noopener noreferrer" class="apk-link-card">
+          <span class="apk-badge">ANDROID APK</span>
+          <strong>Repo GitHub Asli</strong>
+          <small>Unduh Pantau-Emas-debug.apk</small>
+        </a>
+      </div>
+    </aside>
+
+    <div class="main-wrapper">
+      <header class="topbar">
+        <div class="topbar-left">
+          <img src="assets/icon.jpg" alt="Pantau Emas" class="mobile-logo" />
+          <div>
+            <p class="eyebrow">PASAR EMAS INDONESIA</p>
+            <h1 id="pageTitle">Harga Terkini Logam Mulia</h1>
+          </div>
+        </div>
+        <div class="topbar-actions">
+          <div class="spot-pill" id="spotTicker" title="London Bullion Market (XAU/USD)">
+            <span class="pulse-dot"></span>
+            <span id="spotTickerText">Memuat Spot XAU...</span>
+          </div>
+          <button id="refreshBtn" class="icon-btn" title="Perbarui Harga Emas">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg>
+          </button>
+          <button id="themeToggle" class="icon-btn" title="Ganti Tema Terang/Gelap">
+            <svg id="themeIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="content">
+        <section id="screen-prices" class="screen active">
+          <div class="hero-banner-wrap">
+            <img src="assets/banner.jpg" alt="Pantau Emas Banner" class="hero-banner-img" />
+            <div class="hero-banner-overlay">
+              <span class="banner-pill">Real-Time Gold Monitor</span>
+              <h2>Pantau Harga Antam, UBS, Galeri 24 & Spot Dunia</h2>
+              <p id="lastUpdatedText">Sinkronisasi data pasar...</p>
+            </div>
+          </div>
+
+          <div class="provider-chips" id="pricesProviderChips"></div>
+
+          <div id="alertBannerContainer"></div>
+
+          <div class="price-hero-card" id="priceHeroCard">
+            <div class="hero-top">
+              <div>
+                <span class="provider-badge" id="heroProviderBadge">ANTAM</span>
+                <h3 id="heroProviderName">PT Aneka Tambang Tbk (Logam Mulia)</h3>
+                <p class="hero-subtitle" id="heroProviderSub">Sertifikasi LBMA & CertiEye</p>
+              </div>
+              <div class="delta-chip up" id="heroDeltaChip">+0.00%</div>
+            </div>
+
+            <div class="hero-grid">
+              <div class="price-box primary">
+                <span class="price-label">Harga Jual (per gram)</span>
+                <strong class="price-value mono" id="heroBuyPrice">Rp 0</strong>
+                <span class="price-sub" id="heroDeltaAmount">Perubahan harian: Rp 0</span>
+              </div>
+              <div class="price-box secondary">
+                <span class="price-label">Harga Buyback (Jual Kembali)</span>
+                <strong class="price-value mono" id="heroBuybackPrice">Rp 0</strong>
+                <span class="price-sub" id="heroSpreadInfo">Spread: Rp 0</span>
+              </div>
+            </div>
+
+            <div class="hero-footer-actions">
+              <button class="btn btn-gold" id="quickAddPortfolioBtn">+ Simpan ke Portofolio</button>
+              <button class="btn btn-outline" id="quickSetAlertBtn">Pasang Target Harga</button>
+              <button class="btn btn-ghost" id="openCustomPriceBtn">Sesuaikan Harga Manual</button>
+            </div>
+          </div>
+
+          <div class="global-spot-strip">
+            <div class="spot-item">
+              <span>Spot Dunia (XAU/USD)</span>
+              <strong class="mono" id="globalXauUsd">-</strong>
+            </div>
+            <div class="spot-item">
+              <span>Kurs Tengah (USD/IDR)</span>
+              <strong class="mono" id="globalUsdIdr">-</strong>
+            </div>
+            <div class="spot-item">
+              <span>Acuan Spot / Gram</span>
+              <strong class="mono" id="globalIdrGram">-</strong>
+            </div>
+          </div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <h3>Daftar Pecahan Emas Batangan</h3>
+                <p class="muted">Ketuk baris pecahan mana saja untuk menghitung simulasi investasi.</p>
+              </div>
+              <div class="search-box">
+                <input type="text" id="denomSearchInput" placeholder="Cari gramasi (cth: 5, 10, 25)..." />
+              </div>
+            </div>
+            <div class="table-wrap">
+              <table class="denom-table">
+                <thead>
+                  <tr>
+                    <th>Berat</th>
+                    <th>Harga Resmi</th>
+                    <th>Harga / Gram</th>
+                    <th>Estimasi Buyback</th>
+                    <th>Aksi</th>
+                  </tr>
+                </thead>
+                <tbody id="denominationBody"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <section id="screen-chart" class="screen">
+          <div class="provider-chips" id="chartProviderChips"></div>
+
+          <div class="card">
+            <div class="card-header-row">
+              <div>
+                <h3 id="chartTitle">Grafik Tren Harga Emas</h3>
+                <p class="muted">Analisis pergerakan harga historis dan tren pertumbuhan</p>
+              </div>
+              <div class="timeframe-pills" id="timeframePills"></div>
+            </div>
+
+            <div class="chart-hover-readout">
+              <div>
+                <span class="muted" id="chartHoverDate">Arahkan kursor / sentuh grafik</span>
+                <strong class="mono chart-main-price" id="chartHoverPrice">Rp 0</strong>
+              </div>
+              <div id="chartHoverChange" class="delta-chip up">+0.00%</div>
+            </div>
+
+            <div class="chart-canvas-wrap">
+              <canvas id="goldChartCanvas"></canvas>
+            </div>
+
+            <div class="stats-grid">
+              <div class="stat-box">
+                <span>Tertinggi</span>
+                <strong class="mono" id="chartHighest">Rp 0</strong>
+              </div>
+              <div class="stat-box">
+                <span>Terendah</span>
+                <strong class="mono" id="chartLowest">Rp 0</strong>
+              </div>
+              <div class="stat-box">
+                <span>Rata-rata</span>
+                <strong class="mono" id="chartAverage">Rp 0</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="screen-calculator" class="screen">
+          <div class="segmented-tabs" id="calcSubTabs">
+            <button class="seg-btn active" data-calctab="profit">Simulasi Laba/Rugi</button>
+            <button class="seg-btn" data-calctab="buy">Simulasi Beli</button>
+            <button class="seg-btn" data-calctab="zakat">Zakat Emas</button>
+          </div>
+
+          <div id="calc-panel-profit" class="calc-panel active">
+            <div class="card">
+              <div class="card-header-row">
+                <div>
+                  <h3>Simulasi Cek Untung / Rugi Emas</h3>
+                  <p class="muted">Hitung potensi laba/rugi emas Anda berdasarkan data pasar terkini (PMK No. 48/2023).</p>
+                </div>
+              </div>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Merek Emas</span>
+                  <select id="calcProvider"></select>
+                </label>
+                <label class="field">
+                  <span>Berat Emas (Gram)</span>
+                  <input type="number" id="calcWeight" step="0.01" min="0.01" value="10" />
+                </label>
+                <label class="field">
+                  <span>Harga Beli Awal / Gram (Rp)</span>
+                  <input type="number" id="calcBuyPrice" step="1000" min="1000" />
+                </label>
+                <label class="field checkbox-field">
+                  <input type="checkbox" id="calcHasNpwp" checked />
+                  <span>Memiliki NPWP/NIK (PPh 22 Buyback 1.5% &gt; Rp 10 Jt, Non-NPWP 3.0%)</span>
+                </label>
+              </div>
+
+              <div class="result-panel" id="profitResultBox">
+                <div class="result-main">
+                  <span class="muted">ESTIMASI LABA / RUGI BERSIH</span>
+                  <strong class="mono result-big" id="profitNetValue">Rp 0</strong>
+                  <span class="delta-chip up" id="profitPercentChip">0.00%</span>
+                </div>
+                <div class="result-breakdown">
+                  <div><span>Total Modal Beli</span><strong class="mono" id="profitTotalModal">Rp 0</strong></div>
+                  <div><span>Nilai Buyback Kotor</span><strong class="mono" id="profitGrossBuyback">Rp 0</strong></div>
+                  <div><span>Potongan Pajak PPh 22</span><strong class="mono" id="profitTax">Rp 0</strong></div>
+                  <div><span>Nilai Bersih Diterima</span><strong class="mono" id="profitNetReceive">Rp 0</strong></div>
+                </div>
+                <div class="result-actions">
+                  <button class="btn btn-gold" id="calcSavePortfolioBtn">Simpan Emas Ini ke Portofolio</button>
+                  <button class="btn btn-outline" id="shareCalcBtn">Salin Ringkasan Simulasi</button>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="calc-panel-buy" class="calc-panel">
+            <div class="card">
+              <h3>Simulasi Pembelian Emas Batangan</h3>
+              <p class="muted">Estimasi biaya pembelian emas beserta PPh 22 (0.25% dengan NPWP / 0.50% tanpa NPWP).</p>
+              <div class="segmented-tabs small" id="buyModeTabs">
+                <button class="seg-btn active" data-buymode="budget">Berdasarkan Budget (Rp)</button>
+                <button class="seg-btn" data-buymode="grams">Berdasarkan Gram</button>
+              </div>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Pilih Merek Emas</span>
+                  <select id="buyProvider"></select>
+                </label>
+                <label class="field" id="buyBudgetField">
+                  <span>Nominal Anggaran Budget (Rp)</span>
+                  <input type="number" id="buyBudgetInput" step="50000" min="10000" value="5000000" />
+                </label>
+                <label class="field hidden" id="buyGramsField">
+                  <span>Jumlah Gram Emas</span>
+                  <input type="number" id="buyGramsInput" step="0.01" min="0.01" value="5" />
+                </label>
+                <label class="field checkbox-field">
+                  <input type="checkbox" id="buyHasNpwp" checked />
+                  <span>Memiliki NPWP / NIK (Tarif PPh 22: 0.25% | Non-NPWP: 0.50%)</span>
+                </label>
+              </div>
+              <div class="result-panel">
+                <div class="result-main">
+                  <span class="muted" id="buyResultLabel">Total Emas Didapat:</span>
+                  <strong class="mono result-big" id="buyPrimaryResult">0.00 gr</strong>
+                </div>
+                <div class="result-breakdown">
+                  <div><span>Harga Dasar / Gram</span><strong class="mono" id="buyUnitRate">Rp 0</strong></div>
+                  <div><span>Pajak PPh 22</span><strong class="mono" id="buyTaxValue">Rp 0</strong></div>
+                  <div><span>Total Pembayaran</span><strong class="mono" id="buyTotalPay">Rp 0</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div id="calc-panel-zakat" class="calc-panel">
+            <div class="card">
+              <h3>Kalkulator Zakat Emas (Zakat Maal)</h3>
+              <p class="muted">Zakat mal wajib dikeluarkan 2.5% jika simpanan emas telah mencapai nisab 85 gram dan tersimpan penuh selama 1 tahun (haul).</p>
+              <div class="form-grid">
+                <label class="field">
+                  <span>Total Berat Emas Simpanan (Gram)</span>
+                  <input type="number" id="zakatGramsInput" step="0.1" min="0" value="100" />
+                </label>
+                <label class="field">
+                  <span>Acuan Harga Emas</span>
+                  <select id="zakatProvider"></select>
+                </label>
+                <label class="field checkbox-field">
+                  <input type="checkbox" id="zakatHaulCheck" checked />
+                  <span>Telah tersimpan penuh 1 tahun (Haul terpenuhi)</span>
+                </label>
+              </div>
+              <div class="result-panel">
+                <div class="result-main">
+                  <span class="muted">Status Kewajiban Zakat:</span>
+                  <strong class="result-status" id="zakatStatusBadge">WAJIB ZAKAT</strong>
+                  <p class="muted" id="zakatStatusDesc"></p>
+                </div>
+                <div class="result-breakdown">
+                  <div><span>Nisab Zakat Emas Murni</span><strong class="mono">85 Gram</strong></div>
+                  <div><span>Kadar Zakat (2.5% Emas)</span><strong class="mono" id="zakatGoldGrams">0 gr</strong></div>
+                  <div><span>Nilai Zakat Setara Rupiah</span><strong class="mono" id="zakatRupiahValue">Rp 0</strong></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section id="screen-portfolio" class="screen">
+          <div class="portfolio-summary-card">
+            <div class="summary-header">
+              <div>
+                <p class="eyebrow">PORTOFOLIO EMAS SAYA</p>
+                <h2 class="mono" id="portfolioTotalValue">Rp 0</h2>
+                <span class="muted">ESTIMASI NILAI PASAR TERKINI (BUYBACK)</span>
+              </div>
+              <div class="delta-chip up" id="portfolioProfitChip">+Rp 0 (0.00%)</div>
+            </div>
+            <div class="stats-grid compact">
+              <div class="stat-box">
+                <span>Total Berat</span>
+                <strong class="mono" id="portfolioTotalGrams">0 gr</strong>
+              </div>
+              <div class="stat-box">
+                <span>Total Modal Beli</span>
+                <strong class="mono" id="portfolioTotalCost">Rp 0</strong>
+              </div>
+              <div class="stat-box">
+                <span>Target Harga Aktif</span>
+                <strong class="mono" id="portfolioAlertCount">0</strong>
+              </div>
+            </div>
+            <div class="hero-footer-actions">
+              <button class="btn btn-gold" id="portfolioAddBtn">+ Tambah Emas</button>
+              <button class="btn btn-outline" id="portfolioAlertBtn">+ Pasang Target Harga</button>
+            </div>
+          </div>
+
+          <div class="card">
+            <h3>Daftar Kepemilikan Emas (<span id="portfolioCountLabel">0</span>)</h3>
+            <div id="portfolioList" class="stack-list"></div>
+          </div>
+
+          <div class="card">
+            <h3>Daftar Target Pantau Harga (<span id="alertsCountLabel">0</span>)</h3>
+            <div id="alertsList" class="stack-list"></div>
+          </div>
+        </section>
+
+        <section id="screen-tips" class="screen">
+          <div class="card intro-tips">
+            <h3>Edukasi & Panduan Emas</h3>
+            <p class="muted">Tips investasi cerdas, pemahaman sertifikat, pajak PMK 48/2023, dan strategi Dollar Cost Averaging (DCA).</p>
+          </div>
+          <div id="tipsAccordion" class="stack-list"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <nav class="mobile-bottom-nav" aria-label="Navigasi Mobile">
+    <button class="mnav-item active" data-screen="prices">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+      <span>Harga</span>
+    </button>
+    <button class="mnav-item" data-screen="chart">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 3v18h18"/><path d="m19 9-5 5-4-4-3 3"/></svg>
+      <span>Grafik</span>
+    </button>
+    <button class="mnav-item" data-screen="calculator">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M8 6h8M8 10h2M14 10h2M8 14h2M14 14h2M8 18h2M14 18h2"/></svg>
+      <span>Kalkulator</span>
+    </button>
+    <button class="mnav-item" data-screen="portfolio">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 12V7H5a2 2 0 0 1 0-4h14v4"/><path d="M3 5v14a2 2 0 0 0 2 2h16v-5"/><path d="M18 12a2 2 0 0 0 0 4h4v-4Z"/></svg>
+      <span>Portofolio</span>
+    </button>
+    <button class="mnav-item" data-screen="tips">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7V17h8v-2.3A7 7 0 0 0 12 2Z"/></svg>
+      <span>Tips</span>
+    </button>
+  </nav>
+
+  <div id="modalBackdrop" class="modal-backdrop hidden" role="dialog" aria-modal="true">
+    <div class="modal-card">
+      <div class="modal-header">
+        <h3 id="modalTitle">Modal</h3>
+        <button class="icon-btn" id="modalCloseBtn" aria-label="Tutup">&times;</button>
+      </div>
+      <div id="modalBody"></div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+  <script src="app.js"></script>
+</body>
+</html>
+
